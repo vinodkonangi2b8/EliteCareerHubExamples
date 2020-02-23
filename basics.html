@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Basics</title>
+</head>
+
+<body onunload="removeEvents()">
+
+    <button id="myBtn">Click me</button>
+
+    <p id="demo"></p>
+
+</body>
+
+<script>
+    document.getElementById("myBtn").addEventListener("click", DisplayTime);
+
+    function DisplayTime() {
+        document.getElementById("demo").innerHTML = new Date();
+    }
+
+    function removeEvents() {
+        document.getElementById("myBtn").removeEventListener("click", DisplayTime);
+    }
+</script>
+
+</html>
