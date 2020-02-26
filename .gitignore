@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/MVC/EliteTravels/.vs
+/MVC/EliteTravels/EliteTravels/bin/Debug/netcoreapp2.0
+/MVC/EliteTravels/EliteTravels/node_modules
+/MVC/EliteTravels/EliteTravels/obj
+/MVC/EliteTravels/EliteTravels/EliteTravels.csproj.user
+/UI/HTML/node_modules
