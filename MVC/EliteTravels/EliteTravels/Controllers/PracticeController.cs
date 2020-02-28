@@ -62,7 +62,8 @@ namespace EliteTravels.Controllers
         public ActionResult Index(AssigmentResult examResult)
         {
             examResult.Exam.ForEach(q => {
-
+                QuestionAndAnswers original = originalQandAns.Where(origQue => origQue.Question == q.Question).FirstOrDefault();
+                q.Answer = original.Answer;
             });
             return View("Exam", examResult);
         }
