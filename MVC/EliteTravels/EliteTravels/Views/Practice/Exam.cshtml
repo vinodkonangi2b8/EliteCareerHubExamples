@@ -1,0 +1,39 @@
+﻿@model EliteTravels.Models.AssigmentResult
+
+@{
+    ViewData["Title"] = "Exam";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+
+            @for (int indx = 0; indx < Model.Exam.Count; indx++)
+            {
+                <div class="form-group mt-3">
+                    <label for="formGroupExampleInput" asp-for="@Model.Exam[indx].Question">@Model.Exam[indx].Question</label>
+                </div>
+
+                for (int op = 0; op < Model.Exam[indx].Options.Count; op++)
+                {
+                    <div class="form-check form-check">
+                        <input class="form-check-input" type="radio" asp-for="@Model.Exam[indx].Options[op].IsSelected" name="@Model.Exam[indx].Question" value="@Model.Exam[indx].Options[op]">
+                        <label class="form-check-label"> @Model.Exam[indx].Options[op] </label>
+                    </div>
+                }
+
+                if (string.IsNullOrEmpty(Model.Exam[indx].Answer) == false)
+                {
+                    <div class="alert alert-info mt-3" role="alert">
+                        <span asp-for="@Model.Exam[indx].Answer">@Model.Exam[indx].Answer</span>  
+                    </div>
+                }
+            }
+            <input type="submit" name="btnSubmit" class="btn btn-primary mt-5" value="Submit Test" />
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
