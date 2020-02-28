@@ -4,9 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
+<h2>Index</h2>
+
+<h4>Booking</h4>
+<hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="BookingSubmit">
+        <form asp-action="Index">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="From" class="control-label"></label>
@@ -20,23 +24,24 @@
             </div>
             <div class="form-group">
                 <label asp-for="TravelDate" class="control-label"></label>
-                @Html.TextBoxFor(m => m.TravelDate, new { @class = "form-control datepicker" })
-                @*<input asp-for="TravelDate" class="form-control datepicker" />*@
+                <input asp-for="TravelDate" class="form-control" />
                 <span asp-validation-for="TravelDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ReturnDate" class="control-label"></label>
-                @Html.TextBoxFor(m => m.ReturnDate, new {@class= "form-control datepicker" })
-                @*<input asp-for="ReturnDate" class="form-control datepicker" />*@
+                <input asp-for="ReturnDate" class="form-control" />
                 <span asp-validation-for="ReturnDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

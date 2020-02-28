@@ -6,7 +6,7 @@ namespace EliteTravels.Models
     {
         public string Question { get; set; }
 
-        public List<Options> Options { get; set; }
+        public List<string> Options { get; set; }
 
         public string Answer { get; set; }
     }
