@@ -2,14 +2,8 @@
 
 namespace EliteTravels.Models
 {
-    public class Assignment
+    public class Assignment : QuestionAndAnswers
     {
-        public string Question { get; set; }
-
-        public List<string> Options { get; set; }
-
-        public string Answer { get; set; }
-
         public string SelectedAnswer { get; set; }
     }
 }

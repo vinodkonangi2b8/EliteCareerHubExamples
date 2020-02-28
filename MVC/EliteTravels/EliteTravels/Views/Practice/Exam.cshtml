@@ -12,12 +12,13 @@
             {
                 <div class="form-group mt-3">
                     <input class="form-check-input" type="hidden" asp-for="@Model.Exam[indx].Question" value="@Model.Exam[indx].Question">
-                    <label for="formGroupExampleInput" asp-for="@Model.Exam[indx].Question">@Model.Exam[indx].Question</label>
+                    <label for="formGroupExampleInput">@Model.Exam[indx].Question</label>
                 </div>
 
                 for (int op = 0; op < Model.Exam[indx].Options.Count; op++)
                 {
-                    <input class="form-check-input" type="hidden" asp-for="@Model.Exam[indx].Options[op]" value="@Model.Exam[indx].Options[op]">
+                    <input class="form-check-input" type="hidden" asp-for="@Model.Exam[indx].Options[op]"
+                           value="@Model.Exam[indx].Options[op]">
                     <div class="form-check form-check">
                         @Html.RadioButtonFor(m => m.Exam[indx].SelectedAnswer, Model.Exam[indx].Options[op])@Model.Exam[indx].Options[op]
                     </div>
@@ -26,8 +27,9 @@
                 if (string.IsNullOrEmpty(Model.Exam[indx].Answer) == false)
                 {
                     <div class="alert alert-info mt-3" role="alert">
-                        <input class="form-check-input" type="hidden" asp-for="@Model.Exam[indx].Answer" value="@Model.Exam[indx].Answer">
-                        <span asp-for="@Model.Exam[indx].Answer">@Model.Exam[indx].Answer</span>
+                        @*<input class="form-check-input" type="hidden" asp-for="@Model.Exam[indx].Answer"
+                               value="@Model.Exam[indx].Answer">*@
+                        <span>@Model.Exam[indx].Answer</span>
                     </div>
                 }
             }

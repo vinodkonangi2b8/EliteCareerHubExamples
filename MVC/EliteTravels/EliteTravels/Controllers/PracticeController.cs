@@ -18,7 +18,7 @@ namespace EliteTravels.Controllers
 
         private void LoadQuestionsFromFile()
         {
-            string[] lines = TextFile.File.ReadAllLines(@"C:\Users\vinod\OneDrive\Desktop\HtmlExamples\Elite2\InterviewQuetions.txt");
+            string[] lines = TextFile.File.ReadAllLines(@"F:\EliteExamples\EliteCareerHubExamples\InterviewQuetions.txt");
             foreach (string ln in lines)
             {
                 QuestionAndAnswers qa = new QuestionAndAnswers();
@@ -26,14 +26,7 @@ namespace EliteTravels.Controllers
                 string[] values = ln.Split("?");
                 qa.Question = values[0];
                 string[] options = values[1].Split(",");
-
-                List<string> listOpt = new List<string>();
-                foreach (string eachOp in options)
-                {
-                    listOpt.Add(eachOp);
-                };
-
-                qa.Options = listOpt;
+                qa.Options = options.ToList();
                 qa.Answer = values[2];
 
                 originalQandAns.Add(qa);
@@ -43,13 +36,12 @@ namespace EliteTravels.Controllers
         public IActionResult Index()
         {
             AssigmentResult assigmentResult = new AssigmentResult();
-            List<Assignment> test = new List<Assignment>();
 
+            List<Assignment> test = new List<Assignment>();
             originalQandAns.ForEach(q =>
             {
                 Assignment assignment = new Assignment();
                 assignment.Question = q.Question;
-
                 assignment.Options = q.Options;
                 test.Add(assignment);
             });

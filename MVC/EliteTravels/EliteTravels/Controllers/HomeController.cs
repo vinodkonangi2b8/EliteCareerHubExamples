@@ -15,11 +15,5 @@ namespace EliteTravels.Controllers
 
             return View();
         }
-
-        [HttpPost]
-        public void BookingSubmit([Bind("From,To,TravelDate,ReturnDate")]Booking booking)
-        {
-
-        }
     }
 }
