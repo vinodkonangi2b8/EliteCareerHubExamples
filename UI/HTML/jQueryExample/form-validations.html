@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Form</title>
+    <link rel="stylesheet" href="./../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="./../scripts/jquery-ui.css">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+
+        <form id="myForm">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp"
+                    placeholder="Enter email">
+                <div class="invalid-feedback">
+                    Please provide a valid state.
+                </div>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                <div class="invalid-feedback">
+                    Please provide a valid state.
+                </div>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" name="policy">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" required type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                        value="option1">
+                    <label class="form-check-label" for="inlineRadio1">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" required type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                        value="option2">
+                    <label class="form-check-label" for="inlineRadio2">Female</label>
+                </div>
+
+            <div class="float-right mt-5">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+        </form>
+    </div>
+
+
+    <script src="./../node_modules/jquery/dist/jquery.js"></script>
+    <script src="./../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="./../node_modules/popper.js/dist/popper.js"></script>
+    <script src="./../scripts/jquery-ui.js"></script>
+    <script src="./form-validations.js"></script>
+</body>
+
+</html>
