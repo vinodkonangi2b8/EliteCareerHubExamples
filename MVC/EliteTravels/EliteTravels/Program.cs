@@ -17,9 +17,14 @@ namespace EliteTravels
             BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+        public static IWebHost BuildWebHost(string[] args)
+        {
+         return WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((httpContext, config) => {
+                    config.AddJsonFile("Configuration/configData.json");
+                })
                 .UseStartup<Startup>()
                 .Build();
+        }
     }
 }

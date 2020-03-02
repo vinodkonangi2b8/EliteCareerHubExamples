@@ -27,8 +27,8 @@
                 if (string.IsNullOrEmpty(Model.Exam[indx].Answer) == false)
                 {
                     <div class="alert alert-info mt-3" role="alert">
-                        @*<input class="form-check-input" type="hidden" asp-for="@Model.Exam[indx].Answer"
-                               value="@Model.Exam[indx].Answer">*@
+                        <input class="form-check-input" type="hidden" asp-for="@Model.Exam[indx].Answer"
+                               value="@Model.Exam[indx].Answer">
                         <span>@Model.Exam[indx].Answer</span>
                     </div>
                 }
@@ -38,6 +38,3 @@
     </div>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

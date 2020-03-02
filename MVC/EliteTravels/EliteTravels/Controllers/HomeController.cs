@@ -12,8 +12,17 @@ namespace EliteTravels.Controllers
     {
         public IActionResult Index()
         {
-
             return View();
+        }
+
+        public PartialViewResult GetMyPartialView()
+        {
+            return PartialView("_PartialViewExample");
+        }
+
+        public IActionResult QueryStringExmaple(int id, string name)
+        {
+            return Content($"Id is {id} and Name is {name}");
         }
     }
 }

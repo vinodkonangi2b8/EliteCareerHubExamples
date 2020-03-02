@@ -4,10 +4,6 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
-
-<h4>Booking</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Index">
@@ -37,12 +33,13 @@
             </div>
         </form>
     </div>
+
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@Html.Partial("_PartialViewExample")
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<h1>Another way of rendering partial view</h1>
+@{
+    Html.RenderPartial("_PartialViewExample");
 }
+
