@@ -4,79 +4,105 @@
     ViewData["Title"] = "Exam";
 }
 
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post" id="testForm">
 
-            @for (int indx = 0; indx < Model.Exam.Count; indx++)
-            {
-                <div class="form-group mt-3">
-                    <input class="form-check-input" type="hidden" asp-for="@Model.Exam[indx].Question" value="@Model.Exam[indx].Question">
-                    <label for="formGroupExampleInput">@Model.Exam[indx].Question?</label>
-                </div>
-
-                for (int op = 0; op < Model.Exam[indx].Options.Count; op++)
+                @for (int indx = 0; indx < Model.Exam.Count; indx++)
                 {
-                    <input class="form-check-input" type="hidden" asp-for="@Model.Exam[indx].Options[op]"
-                           value="@Model.Exam[indx].Options[op]">
-                    @if (Model.ShowResult)
+                    <div class="form-group mt-3">
+                        <input class="form-check-input" type="hidden" asp-for="@Model.Exam[indx].Question" value="@Model.Exam[indx].Question">
+                        <label for="formGroupExampleInput">@Model.Exam[indx].Question?</label>
+                    </div>
+
+                    for (int op = 0; op < Model.Exam[indx].Options.Count; op++)
                     {
-                        <div class="form-check form-check disabled">
-                            @Html.RadioButtonFor(m => m.Exam[indx].SelectedAnswer, Model.Exam[indx].Options[op], new { disabled = "disabled", @class = "" })
-                            <label class="form-check-label" for="exampleRadios1">
+                        <input class="form-check-input" type="hidden" asp-for="@Model.Exam[indx].Options[op]" value="@Model.Exam[indx].Options[op]">
+                        @if (Model.ShowResult)
+                        {
+                            <div class="form-check">
+                                @Html.RadioButtonFor(m => m.Exam[indx].SelectedAnswer, Model.Exam[indx].Options[op], new { disabled = "disabled" })
                                 @Model.Exam[indx].Options[op]
-                            </label>
-                        </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-check">
+                                @Html.RadioButtonFor(m => m.Exam[indx].SelectedAnswer, Model.Exam[indx].Options[op])
+                                @Model.Exam[indx].Options[op]
+                            </div>
+                        }
                     }
-                    else
+
+                    if (string.IsNullOrEmpty(Model.Exam[indx].Answer) == false)
                     {
-                        <div class="form-check form-check">
-                            @Html.RadioButtonFor(m => m.Exam[indx].SelectedAnswer, Model.Exam[indx].Options[op])
-                            <label class="form-check-label" for="exampleRadios1">
-                                @Model.Exam[indx].Options[op]
-                            </label>
+                        <div class="alert alert-info mt-3" role="alert">
+                            <input class="form-check-input" type="hidden" asp-for="@Model.Exam[indx].Answer"
+                                   value="@Model.Exam[indx].Answer">
+                            <span>@Model.Exam[indx].Answer</span>
                         </div>
                     }
                 }
 
-                if (string.IsNullOrEmpty(Model.Exam[indx].Answer) == false)
+                @if (Model.ShowResult)
                 {
-                    <div class="alert alert-info mt-3" role="alert">
-                        <input class="form-check-input" type="hidden" asp-for="@Model.Exam[indx].Answer"
-                               value="@Model.Exam[indx].Answer">
-                        <span>@Model.Exam[indx].Answer</span>
+                    <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_1uKnRo.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay>
+                    </lottie-player>
+                    <h3>
+                        You scored
+                        <small class="text-muted">@Model.Percentage%</small>
+                    </h3>
+                    <h3>
+                        Total Marks
+                        <small class="text-muted">@Model.TotalMarks</small>
+                    </h3>
+                    <h3>
+                        Total Correct
+                        <small class="text-muted">@Model.TotalMarksSecured</small>
+                    </h3>
+                    <h3>
+                        Status
+                        <small class="text-primary">@Model.Status</small>
+                    </h3>
+
+                }
+                else if (Model.PageNumber == 1)
+                {
+                    <input type="submit" id="btnFirst" class="btn btn-primary mt-5" value="Next" />
+                }
+                else if (Model.PageNumber == Model.TotalPages)
+                {
+                    <input type="submit" id="btnPre" class="btn btn-primary mt-5" value="Previous" />
+                    <input type="submit" id="btnNext" class="btn btn-primary mt-5" value="Submit" />
+                }
+                else if (Model.PageNumber != Model.TotalPages)
+                {
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <input type="submit" id="btnPre" class="btn btn-primary mt-5" value="Previous" />
+                        <input type="submit" id="btnNext" class="btn btn-primary mt-5" value="Next" />
                     </div>
                 }
-            }
+                @Html.HiddenFor(model => model.PageNumber)
+                @Html.HiddenFor(model => model.TotalPages)
+                @Html.HiddenFor(model => model.Timer)
 
-            @if (Model.ShowResult)
-            {
-                <h5>Result: @Model.TotalMarksSecured/@Model.TotalMarks</h5>
-            }
-            else if (Model.PageNumber == 1)
-            {
-                <input type="submit" id="btnFirst" class="btn btn-primary mt-5" value="Next" />
-            }
-            else if (Model.PageNumber == Model.TotalPages)
-            {
-                <input type="submit" id="btnPre" class="btn btn-primary mt-5" value="Previous" />
-                <input type="submit" id="btnNext" class="btn btn-primary mt-5" value="Submit" />
-            }
-            else if (Model.PageNumber != Model.TotalPages)
-            {
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <input type="submit" id="btnPre" class="btn btn-primary mt-5" value="Previous" />
-                    <input type="submit" id="btnNext" class="btn btn-primary mt-5" value="Next" />
+            </form>
+        </div>
+        @if (!Model.ShowResult)
+        {
+            <div class="col-md-8">
+                <div class="row float-right">
+                    <label class="mx-2">Time Left: </label>
+                    <span id="timerDisplay"></span>
                 </div>
-            }
-            @Html.HiddenFor(model => model.PageNumber)
-            @Html.HiddenFor(model => model.TotalPages)
-        </form>
+            </div>
+        }
     </div>
-</div>
 
 @section Scripts
 {
+    <script src='https://unpkg.com/@@lottiefiles/lottie-player@latest/dist/lottie-player.js'></script>
+
     <script>
         $(() => {
             $("#btnFirst").click(function () {
@@ -91,6 +117,21 @@
                 document.getElementById('PageNumber').value = parseInt($("#PageNumber").val()) + 1;
             });
         });
+        setInterval(() => {
+            var t = parseInt($("#Timer").val())-1;
+            $("#Timer").val(t);
+            var date = new Date(null);
+            date.setSeconds(t);
+            var result = date.toISOString().substr(11, 8);
+            $("#timerDisplay").html(result);
+
+            if (t === 0) {
+                var totalPages = parseInt($("#TotalPages").val()) + 1
+                $("#PageNumber").val(totalPages);
+                $("#testForm").submit()  
+            }
+
+        }, 1000);
     </script>
 }
 

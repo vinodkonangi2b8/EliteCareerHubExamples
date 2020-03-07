@@ -52,6 +52,7 @@ namespace EliteTravels.Controllers
             int pageNumber = 1;
             decimal totalPages = GetTotalNumberOfPages(originalQandAns.Count);
             AssessmentData examData = GetAssessmentQuestionsByPageNumber(pageNumber, totalPages);
+            examData.Timer = originalQandAns.Count * 60;
             return View("Exam", examData);
         }
 
@@ -59,20 +60,21 @@ namespace EliteTravels.Controllers
         public ActionResult Index(AssessmentData examResult)
         {
             UpdateSubmittedQandAns(examResult);
-            return View("Exam", GetAssessmentQuestionsByPageNumber(examResult.PageNumber, examResult.TotalPages));
+            AssessmentData que = GetAssessmentQuestionsByPageNumber(examResult.PageNumber, examResult.TotalPages);
+            return View("Exam", que);
         }
 
         private void UpdateSubmittedQandAns(AssessmentData examResult)
         {
-            List<Assignment> submittedQandAns = HttpContext.Session.Get<Assignment>(Constants.SubmittedQuestions);
+            List<Assignment> toBeSubmitted = HttpContext.Session.Get<Assignment>(Constants.SubmittedQuestions);
             examResult.Exam.ForEach(q =>
             {
-                Assignment sub = submittedQandAns.Where(origQue => origQue.Question == q.Question).FirstOrDefault();
+                Assignment sub = toBeSubmitted.Where(origQue => origQue.Question == q.Question).FirstOrDefault();
                 sub.SelectedAnswer = q.SelectedAnswer;
             });
 
             HttpContext.Session.Clear();
-            HttpContext.Session.Set(Constants.SubmittedQuestions, submittedQandAns);
+            HttpContext.Session.Set(Constants.SubmittedQuestions, toBeSubmitted);
         }
 
         private AssessmentData GetAssessmentQuestionsByPageNumber(int pageNumber, decimal maxPageNumber)
@@ -89,6 +91,9 @@ namespace EliteTravels.Controllers
                     if (q.Answer == q.SelectedAnswer)
                         assigmentResult.TotalMarksSecured++;
                 }
+
+                assigmentResult.Percentage = (assigmentResult.TotalMarksSecured /Convert.ToDecimal(assigmentResult.TotalMarks)) * 100;
+                ComputeStatus(assigmentResult);
                 return assigmentResult;
             }
 
@@ -110,6 +115,30 @@ namespace EliteTravels.Controllers
             assigmentResult.TotalPages = maxPageNumber;
 
             return assigmentResult;
+        }
+
+        private void ComputeStatus(AssessmentData assigmentResult)
+        {
+            if (assigmentResult.Percentage <= 35)
+            {
+                assigmentResult.Status = Status.Poor;
+            }
+            else if (assigmentResult.Percentage <= 50)
+            {
+                assigmentResult.Status = Status.Average;
+            }
+            else if (assigmentResult.Percentage <= 60)
+            {
+                assigmentResult.Status = Status.Good;
+            }
+            else if (assigmentResult.Percentage <= 75)
+            {
+                assigmentResult.Status = Status.Excellent;
+            }
+            else
+            {
+                assigmentResult.Status = Status.Outstanding;
+            }
         }
 
         private decimal GetTotalNumberOfPages(int originalQandAnsCount)
