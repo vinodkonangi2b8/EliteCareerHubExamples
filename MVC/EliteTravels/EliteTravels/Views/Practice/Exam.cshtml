@@ -1,4 +1,4 @@
-﻿@model EliteTravels.Models.AssigmentResult
+﻿@model EliteTravels.Models.AssessmentData
 
 @{
     ViewData["Title"] = "Exam";
@@ -12,16 +12,31 @@
             {
                 <div class="form-group mt-3">
                     <input class="form-check-input" type="hidden" asp-for="@Model.Exam[indx].Question" value="@Model.Exam[indx].Question">
-                    <label for="formGroupExampleInput">@Model.Exam[indx].Question</label>
+                    <label for="formGroupExampleInput">@Model.Exam[indx].Question?</label>
                 </div>
 
                 for (int op = 0; op < Model.Exam[indx].Options.Count; op++)
                 {
                     <input class="form-check-input" type="hidden" asp-for="@Model.Exam[indx].Options[op]"
                            value="@Model.Exam[indx].Options[op]">
-                    <div class="form-check form-check">
-                        @Html.RadioButtonFor(m => m.Exam[indx].SelectedAnswer, Model.Exam[indx].Options[op])@Model.Exam[indx].Options[op]
-                    </div>
+                    @if (Model.ShowResult)
+                    {
+                        <div class="form-check form-check disabled">
+                            @Html.RadioButtonFor(m => m.Exam[indx].SelectedAnswer, Model.Exam[indx].Options[op], new { disabled = "disabled", @class = "" })
+                            <label class="form-check-label" for="exampleRadios1">
+                                @Model.Exam[indx].Options[op]
+                            </label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-check form-check">
+                            @Html.RadioButtonFor(m => m.Exam[indx].SelectedAnswer, Model.Exam[indx].Options[op])
+                            <label class="form-check-label" for="exampleRadios1">
+                                @Model.Exam[indx].Options[op]
+                            </label>
+                        </div>
+                    }
                 }
 
                 if (string.IsNullOrEmpty(Model.Exam[indx].Answer) == false)
@@ -33,8 +48,49 @@
                     </div>
                 }
             }
-            <input type="submit" name="btnSubmit" class="btn btn-primary mt-5" value="Submit Test" />
+
+            @if (Model.ShowResult)
+            {
+                <h5>Result: @Model.TotalMarksSecured/@Model.TotalMarks</h5>
+            }
+            else if (Model.PageNumber == 1)
+            {
+                <input type="submit" id="btnFirst" class="btn btn-primary mt-5" value="Next" />
+            }
+            else if (Model.PageNumber == Model.TotalPages)
+            {
+                <input type="submit" id="btnPre" class="btn btn-primary mt-5" value="Previous" />
+                <input type="submit" id="btnNext" class="btn btn-primary mt-5" value="Submit" />
+            }
+            else if (Model.PageNumber != Model.TotalPages)
+            {
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <input type="submit" id="btnPre" class="btn btn-primary mt-5" value="Previous" />
+                    <input type="submit" id="btnNext" class="btn btn-primary mt-5" value="Next" />
+                </div>
+            }
+            @Html.HiddenFor(model => model.PageNumber)
+            @Html.HiddenFor(model => model.TotalPages)
         </form>
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        $(() => {
+            $("#btnFirst").click(function () {
+                document.getElementById('PageNumber').value = parseInt($("#PageNumber").val()) + 1;
+            });
+
+            $("#btnPre").click(function () {
+                document.getElementById('PageNumber').value = parseInt($("#PageNumber").val()) - 1;
+            });
+
+            $("#btnNext").click(function () {
+                document.getElementById('PageNumber').value = parseInt($("#PageNumber").val()) + 1;
+            });
+        });
+    </script>
+}
 

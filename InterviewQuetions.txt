@@ -1,2 +1,5 @@
-1. Where is Tirupathi located? Chittoor, Kadapa, Kurnool, Nellore?Chittoor
-2. Where is ELite Career Hub located? Tirupathi, Bangalore, Hyderabad, Chennai?Tirupathi
+1. Where is Tirupathi located? Chittoor, Kadapa, Kurnool, Nellore? Chittoor
+2. Where is ELite Career Hub located? Tirupathi, Bangalore, Hyderabad, Chennai? Tirupathi
+3. Where Chittoor located? AP, MP, UP, TN? AP
+4. Which is computer science engineering? EEE, CSE, ECE, IT? CSE
+5. What is the value of 2*2? 6, 4, 8, 10? 4

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using EliteTravels.Models;
+using EliteTravels.Utilities;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using EliteTravels.Models;
-using Microsoft.AspNetCore.Mvc;
 using TextFile = System.IO;
 
 namespace EliteTravels.Controllers
@@ -11,6 +11,9 @@ namespace EliteTravels.Controllers
     public class PracticeController : Controller
     {
         List<QuestionAndAnswers> originalQandAns = new List<QuestionAndAnswers>();
+        List<Assignment> subQandA = new List<Assignment>();
+        int maxQuestionsToDisplay = 2;
+
         public PracticeController()
         {
             LoadQuestionsFromFile();
@@ -31,33 +34,88 @@ namespace EliteTravels.Controllers
 
                 originalQandAns.Add(qa);
             }
+
+            foreach (QuestionAndAnswers ln in originalQandAns)
+            {
+                Assignment qa = new Assignment();
+                qa.Question = ln.Question;
+                qa.Options = ln.Options;
+                qa.Answer = ln.Answer;
+                subQandA.Add(qa);
+            }
         }
 
         public IActionResult Index()
         {
-            AssigmentResult assigmentResult = new AssigmentResult();
-
-            List<Assignment> test = new List<Assignment>();
-            originalQandAns.ForEach(q =>
-            {
-                Assignment assignment = new Assignment();
-                assignment.Question = q.Question;
-                assignment.Options = q.Options;
-                test.Add(assignment);
-            });
-            assigmentResult.Exam = test;
-
-            return View("Exam", assigmentResult);
+            HttpContext.Session.Clear();
+            HttpContext.Session.Set(Constants.SubmittedQuestions, subQandA);
+            int pageNumber = 1;
+            decimal totalPages = GetTotalNumberOfPages(originalQandAns.Count);
+            AssessmentData examData = GetAssessmentQuestionsByPageNumber(pageNumber, totalPages);
+            return View("Exam", examData);
         }
 
         [HttpPost]
-        public ActionResult Index(AssigmentResult examResult)
+        public ActionResult Index(AssessmentData examResult)
         {
-            examResult.Exam.ForEach(q => {
-                QuestionAndAnswers original = originalQandAns.Where(origQue => origQue.Question == q.Question).FirstOrDefault();
-                q.Answer = original.Answer;
+            UpdateSubmittedQandAns(examResult);
+            return View("Exam", GetAssessmentQuestionsByPageNumber(examResult.PageNumber, examResult.TotalPages));
+        }
+
+        private void UpdateSubmittedQandAns(AssessmentData examResult)
+        {
+            List<Assignment> submittedQandAns = HttpContext.Session.Get<Assignment>(Constants.SubmittedQuestions);
+            examResult.Exam.ForEach(q =>
+            {
+                Assignment sub = submittedQandAns.Where(origQue => origQue.Question == q.Question).FirstOrDefault();
+                sub.SelectedAnswer = q.SelectedAnswer;
             });
-            return View("Exam", examResult);
+
+            HttpContext.Session.Clear();
+            HttpContext.Session.Set(Constants.SubmittedQuestions, submittedQandAns);
+        }
+
+        private AssessmentData GetAssessmentQuestionsByPageNumber(int pageNumber, decimal maxPageNumber)
+        {
+            AssessmentData assigmentResult = new AssessmentData();
+            if (pageNumber == maxPageNumber + 1)
+            {
+                List<Assignment> submittedQandAns = HttpContext.Session.Get<Assignment>(Constants.SubmittedQuestions);
+                assigmentResult.Exam = submittedQandAns;
+                assigmentResult.ShowResult = true;
+                assigmentResult.TotalMarks = originalQandAns.Count;
+                foreach (var q in submittedQandAns)
+                {
+                    if (q.Answer == q.SelectedAnswer)
+                        assigmentResult.TotalMarksSecured++;
+                }
+                return assigmentResult;
+            }
+
+            int numberOfQuestionsToSkip = (pageNumber - 1) * maxQuestionsToDisplay;
+            List<Assignment> test = new List<Assignment>();
+
+            originalQandAns.Skip(numberOfQuestionsToSkip)
+                           .Take(maxQuestionsToDisplay)
+                           .ToList()
+                           .ForEach(q =>
+                                    {
+                                        Assignment assignment = new Assignment();
+                                        assignment.Question = q.Question;
+                                        assignment.Options = q.Options;
+                                        test.Add(assignment);
+                                    });
+            assigmentResult.Exam = test;
+            assigmentResult.PageNumber = pageNumber;
+            assigmentResult.TotalPages = maxPageNumber;
+
+            return assigmentResult;
+        }
+
+        private decimal GetTotalNumberOfPages(int originalQandAnsCount)
+        {
+            decimal total = originalQandAnsCount / Convert.ToDecimal(maxQuestionsToDisplay);
+            return Math.Ceiling(total);
         }
     }
 }
