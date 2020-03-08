@@ -52,12 +52,12 @@ namespace EliteTravels.Controllers
             int pageNumber = 1;
             decimal totalPages = GetTotalNumberOfPages(originalQandAns.Count);
             AssessmentData examData = GetAssessmentQuestionsByPageNumber(pageNumber, totalPages);
-            examData.Timer = originalQandAns.Count * 60;
+            examData.Timer = originalQandAns.Count * 30;
             return View("Exam", examData);
         }
 
         [HttpPost]
-        public ActionResult Index(AssessmentData examResult)
+        public ActionResult Index1(AssessmentData examResult)
         {
             UpdateSubmittedQandAns(examResult);
             AssessmentData que = GetAssessmentQuestionsByPageNumber(examResult.PageNumber, examResult.TotalPages);

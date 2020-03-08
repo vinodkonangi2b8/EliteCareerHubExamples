@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Trees\" />
+    <Folder Include="Sorting\" />
+    <Folder Include="Queues\" />
+    <Folder Include="Stacks\" />
+  </ItemGroup>
+
+</Project>

@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-md-4">
-            <form method="post" id="testForm">
+            <form method="post" id="testForm" asp-action="Index1">
 
                 @for (int indx = 0; indx < Model.Exam.Count; indx++)
                 {
@@ -46,8 +46,7 @@
 
                 @if (Model.ShowResult)
                 {
-                    <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_1uKnRo.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay>
-                    </lottie-player>
+
                     <h3>
                         You scored
                         <small class="text-muted">@Model.Percentage%</small>
@@ -64,6 +63,17 @@
                         Status
                         <small class="text-primary">@Model.Status</small>
                     </h3>
+                    if (Model.Status == EliteTravels.Models.Status.Poor)
+                    {
+                        <lottie-player src="https://assets9.lottiefiles.com/datafiles/tawau8o8xa7TTxx/data.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay>
+                        </lottie-player>
+                    }
+                    else
+                    {
+
+                        <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_1uKnRo.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay>
+                        </lottie-player>
+                    }
 
                 }
                 else if (Model.PageNumber == 1)
@@ -92,10 +102,16 @@
         {
             <div class="col-md-8">
                 <div class="row float-right">
-                    <label class="mx-2">Time Left: </label>
-                    <span id="timerDisplay"></span>
+                    <div class="col-4">
+                        <lottie-player src="https://assets5.lottiefiles.com/datafiles/iBUxigsGzc4HtDk/data.json" background="transparent" speed="1" style="width: 100px; height: 70px;" loop autoplay>
+                        </lottie-player>
+                    </div>
+                    <span class="col-8 mt-4" id="timerDisplay"></span>
+
                 </div>
             </div>
+            <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_vtKRjq.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay>
+            </lottie-player>
         }
     </div>
 
@@ -117,9 +133,11 @@
                 document.getElementById('PageNumber').value = parseInt($("#PageNumber").val()) + 1;
             });
         });
+
         setInterval(() => {
             var t = parseInt($("#Timer").val())-1;
             $("#Timer").val(t);
+
             var date = new Date(null);
             date.setSeconds(t);
             var result = date.toISOString().substr(11, 8);
