@@ -13,3 +13,8 @@
 /.vs/EliteCareerHubExamples/v16/.suo
 /MVC/EliteTravels/DataStructures/bin/Debug/netcoreapp3.1
 /MVC/EliteTravels/DataStructures/obj
+/DeploymentExamples/DeploymentMvc/.vs/DeploymentMvc
+/DeploymentExamples/DeploymentMvc/DeploymentMvc/bin
+/DeploymentExamples/DeploymentMvc/DeploymentMvc/obj
+/DeploymentExamples/DeploymentMvc/DeploymentMvc/DeploymentMvc.csproj.user
+/DeploymentExamples/MvcDeploymentPackage

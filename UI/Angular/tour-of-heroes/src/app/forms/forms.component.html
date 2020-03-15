@@ -1,0 +1,13 @@
+<div class="form-group">
+    <label for="txtId">Id</label>
+    <input [(ngModel)]="hero.id" type="text" id="txtId" class="form-control">
+</div>
+<div class="form-group">
+    <label for="txtName">Name</label>
+    <input type="text" [(ngModel)]="hero.name" id="txtName" class="form-control">
+</div>
+
+<div *ngIf="hero">
+    {{hero.id}}
+    {{hero.name}}
+</div>
